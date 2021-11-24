@@ -2,19 +2,15 @@ let productData = [];
 
 
 const fetchCanape = async ()=> {
-    await fetch("http://localhost:3000/api/products").then((res) => res.json())
+    await fetch("http://localhost:3000/api/products")
+    .then((res) => res.json())
     .then ((promise) => {
-        productData = promise;
-        
+        productData = promise;        
     })
-
 };
-
 
 const canapAffich =async ()=> {
     await fetchCanape();
-
-
 
 document.getElementById("items").innerHTML = productData.map((router) =>`
 
@@ -25,8 +21,8 @@ document.getElementById("items").innerHTML = productData.map((router) =>`
                                         <p class="productDescription">${router.description}</p>
                                     </article>
                                 </a>
-
 `)
+
 .join("")
 
 };
