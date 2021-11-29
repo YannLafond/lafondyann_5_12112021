@@ -25,27 +25,32 @@ const sofaAffich =async ()=> {
     await fetchSofa();
 
 
+document.querySelector("title").innerText = productData.name;
 
+// injection de l'image et de son alt du produit
 document.querySelector(".item__img").innerHTML = `
         <img src="${productData.imageUrl}" alt="${productData.altTxt}"> `;
 
+//injection de l'intitulé du produit
 document.getElementById("title").innerHTML = productData.name;
 
-document.getElementById("price").innerHTML = productData.price;
+//injection du prix du produit
+document.getElementById("price").innerHTML = productData.price + " ";
 
+//injection de la description du produit
 document.getElementById("description").innerHTML = productData.description;
 
+// creation et injection du choix des couleurs associé au produit
 let colorOption = document.getElementById("colors");
-productData.colors.forEach((color) => {
-    document.createElement("option");
-    
+    productData.colors.forEach((color) => {    
+
     let displayColor = document.createElement("option");
 
     displayColor.value = color;
     displayColor.innerHTML = color;
 
-    colorOption.appendChild(displayColor);
-   
+    colorOption.appendChild(displayColor);    
+       
 });
 
 
