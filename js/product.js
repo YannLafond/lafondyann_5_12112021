@@ -11,7 +11,7 @@ console.log(id);
 
 let productData = [];
 
-const fetchCanape = async ()=> {
+const fetchSofa = async ()=> {
     await fetch(`http://localhost:3000/api/products/${id}`)
     .then((res) => res.json())
     .then ((promise) => {
@@ -20,9 +20,41 @@ const fetchCanape = async ()=> {
     });
 };
 
-const canapAffich =async ()=> {
-    await fetchCanape();
 
-}
+const sofaAffich =async ()=> {
+    await fetchSofa();
 
-canapAffich();
+
+
+document.querySelector(".item__img").innerHTML = `
+        <img src="${productData.imageUrl}" alt="${productData.altTxt}"> `;
+
+document.getElementById("title").innerHTML = productData.name;
+
+document.getElementById("price").innerHTML = productData.price;
+
+document.getElementById("description").innerHTML = productData.description;
+
+let colorOption = document.getElementById("colors");
+productData.colors.forEach((color) => {
+    document.createElement("option");
+    
+    let displayColor = document.createElement("option");
+
+    displayColor.value = color;
+    displayColor.innerHTML = color;
+
+    colorOption.appendChild(displayColor);
+   
+});
+
+
+
+};
+
+
+
+
+
+
+sofaAffich();

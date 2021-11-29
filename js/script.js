@@ -1,7 +1,7 @@
 let productData = [];
 
 
-const fetchCanape = async ()=> {
+const fetchSofa = async ()=> {
     await fetch("http://localhost:3000/api/products")
     .then((res) => res.json())
     .then ((promise) => {
@@ -9,25 +9,25 @@ const fetchCanape = async ()=> {
     })
 };
 
-const canapAffich =async ()=> {
-    await fetchCanape();
+const sofaAffich =async ()=> {
+    await fetchSofa();
 
-document.getElementById("items").innerHTML = productData.map((router) =>`
+document.getElementById("items").innerHTML = productData.map((sofa) => `
 
-                                <a href="./product.html?id=${router._id}">
+        
+                                <a href="./product.html?id=${sofa._id}">
                                     <article>
-                                        <img src="${router.imageUrl}" alt="${router.altTxt}"/>
-                                        <h3 class="productName">${router.name}</h3>
-                                        <p class="productDescription">${router.description}</p>
+                                        <img src="${sofa.imageUrl}" alt="${sofa.altTxt}"/>
+                                        <h3 class="productName">${sofa.name}</h3>
+                                        <p class="productDescription">${sofa.description}</p>
                                     </article>
                                 </a>
-`)
+`,    
 
-.join("")
+).join("");
 
 };
-
-canapAffich();
+sofaAffich();
 
 
 
