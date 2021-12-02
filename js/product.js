@@ -52,6 +52,26 @@ let colorOption = document.getElementById("colors");
     colorOption.appendChild(displayColor);       
 });
 
+let quantityItem = document.getElementById("quantity");
+let buttonAddToCart = document.getElementById("addToCart");
+
+//ecoute du bouton ajouter au panier
+buttonAddToCart.addEventListener("click", (event) => {
+
+//ajout du choix de la couleur dans une variable
+const choiceColor = colorOption.value;
+
+//ajout de la quantité desire dans une variable
+const choiceQuantity = quantityItem.value;
+    
+//envois des informations vers le panier
+
+
+console.log(choiceQuantity);
+
+});
+
+
 
 
 };
