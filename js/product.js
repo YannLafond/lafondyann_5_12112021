@@ -34,7 +34,7 @@ document.querySelector(".item__img").innerHTML = `
 //injection de l'intitulé du produit
 document.getElementById("title").innerHTML = productData.name;
 
-//injection du prix du produit
+//injection du prix du produit avec un espace entre le prix et signe euro
 document.getElementById("price").innerHTML = productData.price + " ";
 
 //injection de la description du produit
@@ -49,8 +49,7 @@ let colorOption = document.getElementById("colors");
     displayColor.value = color;
     displayColor.innerHTML = color;
 
-    colorOption.appendChild(displayColor);    
-       
+    colorOption.appendChild(displayColor);       
 });
 
 
