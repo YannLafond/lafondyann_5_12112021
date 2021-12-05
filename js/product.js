@@ -11,12 +11,14 @@ console.log(id);
 
 let productData = [];
 
+
+
 const fetchSofa = async ()=> {
     await fetch(`http://localhost:3000/api/products/${id}`)
     .then((res) => res.json())
     .then ((promise) => {
         productData = promise;    
-        console.log(productData);    
+           
     });
 };
 
@@ -49,7 +51,7 @@ let colorOption = document.getElementById("colors");
     displayColor.value = color;
     displayColor.innerHTML = color;
 
-    colorOption.appendChild(displayColor);       
+    colorOption.appendChild(displayColor);
 });
 
 let quantityItem = document.getElementById("quantity");
@@ -58,16 +60,37 @@ let buttonAddToCart = document.getElementById("addToCart");
 //ecoute du bouton ajouter au panier
 buttonAddToCart.addEventListener("click", (event) => {
 
+
 //ajout du choix de la couleur dans une variable
 const choiceColor = colorOption.value;
 
 //ajout de la quantité desire dans une variable
 const choiceQuantity = quantityItem.value;
     
-//envois des informations vers le panier
+//les informations sélectionne à envoyer  vers le panier
+let informationItem = {
+    idItem : id,
+    imageItem : productData.imageUrl,
+    nameItem : productData.name,
+    priceItem : productData.price,
+    choiceColorItem : colorOption.value,
+    choiceQuantityItem : quantityItem.value
+}
+// les informations selectionné vers le local strorage
+let itemInLocalStorage = JSON.parse(localStorage.getItem("itemStorage"));
+
+if(itemInLocalStorage){
+    itemInLocalStorage.push(informationItem);
+    localStorage.setItem("itemStorage", JSON.stringify(itemInLocalStorage));
+
+}else{
+    itemInLocalStorage = [];
+    itemInLocalStorage.push(informationItem);
+    localStorage.setItem("itemStorage", JSON.stringify(itemInLocalStorage));
+}
 
 
-console.log(choiceQuantity);
+console.log(itemInLocalStorage);
 
 });
 
