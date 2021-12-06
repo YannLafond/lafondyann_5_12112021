@@ -27,8 +27,7 @@ if(itemInLocalStorage === null){
                     </div>
                     <div class="cart__item__content__settings">
                         <div class="cart__item__content__settings__quantity">
-                            <p>Qté : ${itemInLocalStorage[i].choiceQuantityItem}</p>
-                            <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value=${itemInLocalStorage[i].choiceQuantityItem}>
+                            <p>Qté : ${itemInLocalStorage[i].choiceQuantityItem}<br>Couleur : ${itemInLocalStorage[i].choiceColorItem}</p>                                                        
                         </div>
                         <div class="cart__item__content__settings__delete">
                             <p class="deleteItem">Supprimer</p>
@@ -42,14 +41,17 @@ if(itemInLocalStorage === null){
     cartItems.innerHTML = cartItemContent;
   }    
 
+  let buttonDelete = document.querySelectorAll(".deleteItem");
+
+  for (let deleteItem = 0; deleteItem < buttonDelete.length; deleteItem++){
+    buttonDelete[deleteItem].addEventListener("click",(Event) =>{
+    Event.preventDefault();
+
+    let idSelect = itemInLocalStorage[deleteItem].idItem;
+
+        console.log(idSelect);
+  })
+
+  }
+
 }
-
-
-
-
-
-            
-
-
-
-
