@@ -57,15 +57,13 @@ let colorOption = document.getElementById("colors");
 let quantityItem = document.getElementById("quantity");
 let buttonAddToCart = document.getElementById("addToCart");
 
+
+
 //ecoute du bouton ajouter au panier
 buttonAddToCart.addEventListener("click", (event) => {
 
 
-//ajout du choix de la couleur dans une variable
-const choiceColor = colorOption.value;
 
-//ajout de la quantité desire dans une variable
-const choiceQuantity = quantityItem.value;
     
 //les informations sélectionne à envoyer  vers le panier
 let informationItem = {
@@ -74,34 +72,35 @@ let informationItem = {
     nameItem : productData.name,
     priceItem : productData.price,
     choiceColorItem : colorOption.value,
-    choiceQuantityItem : quantityItem.value
+    choiceQuantityItem : parseInt(quantityItem.value),
+    
 }
-// les informations selectionné vers le local strorage
+// les informations selectionné vers le local storage
 let itemInLocalStorage = JSON.parse(localStorage.getItem("itemStorage"));
 
 if(itemInLocalStorage){
-    itemInLocalStorage.push(informationItem);
-    localStorage.setItem("itemStorage", JSON.stringify(itemInLocalStorage));
+    const storage = itemInLocalStorage.find(
+        (element) => element.idItem == informationItem.idItem && element.choiceColorItem == informationItem.choiceColorItem);
 
-}else{
-    itemInLocalStorage = [];
+    if (storage) {
+        storage.choiceQuantityItem += informationItem.choiceQuantityItem;
+    
+    localStorage.setItem("itemStorage", JSON.stringify(itemInLocalStorage));
+    return;
+    
     itemInLocalStorage.push(informationItem);
     localStorage.setItem("itemStorage", JSON.stringify(itemInLocalStorage));
+    }
+}else{
+    const cart = [];
+    cart.push(informationItem);
+    localStorage.setItem("itemStorage", JSON.stringify(cart));
 }
 
 
-console.log(itemInLocalStorage);
-
+console.log(localStorage);
 });
 
-
-
-
 };
-
-
-
-
-
 
 sofaAffich();

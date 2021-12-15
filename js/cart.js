@@ -1,4 +1,4 @@
-// récupération du local storage
+// récupération du panier dans le local storage
 let itemInLocalStorage = JSON.parse(localStorage.getItem("itemStorage"));
 
 console.log(itemInLocalStorage);
@@ -7,9 +7,11 @@ const cartItems = document.getElementById("cart__items");
 
 let cartItemContent = [];
 
+// condition Si le panier est vide
 if(itemInLocalStorage === null){
+    window.alert("Votre panier est vide");
 
-
+// Sinon boucle sur le panier 
 } else{
     
 
@@ -26,32 +28,48 @@ if(itemInLocalStorage === null){
                         <p>${itemInLocalStorage[i].priceItem} €</p>
                     </div>
                     <div class="cart__item__content__settings">
-                        <div class="cart__item__content__settings__quantity">
-                            <p>Qté : ${itemInLocalStorage[i].choiceQuantityItem}<br>Couleur : ${itemInLocalStorage[i].choiceColorItem}</p>                                                        
+                        <div class="cart__item__content__settings__Price">
+                            <p>Qté : ${itemInLocalStorage[i].choiceQuantityItem}</p>
+                            <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${itemInLocalStorage[i].choiceQuantityItem}">                                                        
                         </div>
                         <div class="cart__item__content__settings__delete">
                             <p class="deleteItem">Supprimer</p>
                         </div>
                     </div>
                 </div>
-            </article>    
+            </article>                
     `};    
     
+// l'injecte dans le code html
   if (i == itemInLocalStorage.length) {
     cartItems.innerHTML = cartItemContent;
   }    
+// ______________Mise à jour du nombre d'article
 
-  let buttonDelete = document.querySelectorAll(".deleteItem");
+// Ajout d'un article
 
-  for (let deleteItem = 0; deleteItem < buttonDelete.length; deleteItem++){
-    buttonDelete[deleteItem].addEventListener("click",(Event) =>{
-    Event.preventDefault();
 
-    let idSelect = itemInLocalStorage[deleteItem].idItem;
 
-        console.log(idSelect);
-  })
 
-  }
+
+// supression de l'article du panier
+
+
+// Total des articles dans le panier et total du prix
+
+
 
 }
+
+//___________________________Le formulaire______________________
+
+/*const inputFirstName = document.getElementById("firstName");
+const firstNameErrorMessage = document.getElementById("firstNameErrorMsg");
+const inputLastName = document.getElementById("lastName");
+const lastNameErrorMessage = document.getElementById("lastNameErrorMsg");
+const inputAdress = document.getElementById("adress");
+const adressErrorMessage = document.getElementById("addressErrorMsg");
+const inputCity = document.getElementById("city");
+const cityErrorMessage = document.getElementById("cityErrorMsg");
+const inputEmail = document.getElementById("email");
+const amailErrorMessage = document.getElementById("emailErrorMsg")*/
