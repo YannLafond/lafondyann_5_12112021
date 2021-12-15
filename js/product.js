@@ -52,6 +52,7 @@ let colorOption = document.getElementById("colors");
     displayColor.innerHTML = color;
 
     colorOption.appendChild(displayColor);
+<<<<<<< HEAD
 });
 
 let quantityItem = document.getElementById("quantity");
@@ -92,16 +93,61 @@ if(itemInLocalStorage){
 
 console.log(itemInLocalStorage);
 
+=======
+>>>>>>> basket
 });
 
+let quantityItem = document.getElementById("quantity");
+let buttonAddToCart = document.getElementById("addToCart");
 
 
+
+<<<<<<< HEAD
+};
+=======
+//ecoute du bouton ajouter au panier
+buttonAddToCart.addEventListener("click", (event) => {
+
+>>>>>>> basket
+
+
+    
+//les informations sélectionne à envoyer  vers le panier
+let informationItem = {
+    idItem : id,
+    imageItem : productData.imageUrl,
+    nameItem : productData.name,
+    priceItem : productData.price,
+    choiceColorItem : colorOption.value,
+    choiceQuantityItem : parseInt(quantityItem.value),
+    
+}
+// les informations selectionné vers le local storage
+let itemInLocalStorage = JSON.parse(localStorage.getItem("itemStorage"));
+
+if(itemInLocalStorage){
+    const storage = itemInLocalStorage.find(
+        (element) => element.idItem == informationItem.idItem && element.choiceColorItem == informationItem.choiceColorItem);
+
+    if (storage) {
+        storage.choiceQuantityItem += informationItem.choiceQuantityItem;
+    
+    localStorage.setItem("itemStorage", JSON.stringify(itemInLocalStorage));
+    return;
+    
+    itemInLocalStorage.push(informationItem);
+    localStorage.setItem("itemStorage", JSON.stringify(itemInLocalStorage));
+    }
+}else{
+    const cart = [];
+    cart.push(informationItem);
+    localStorage.setItem("itemStorage", JSON.stringify(cart));
+}
+
+
+console.log(localStorage);
+});
 
 };
-
-
-
-
-
 
 sofaAffich();
