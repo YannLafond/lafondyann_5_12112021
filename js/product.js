@@ -52,100 +52,63 @@ let colorOption = document.getElementById("colors");
     displayColor.innerHTML = color;
 
     colorOption.appendChild(displayColor);
-<<<<<<< HEAD
 });
 
 let quantityItem = document.getElementById("quantity");
 let buttonAddToCart = document.getElementById("addToCart");
 
+
+
 //ecoute du bouton ajouter au panier
 buttonAddToCart.addEventListener("click", (event) => {
 
-
-//ajout du choix de la couleur dans une variable
-const choiceColor = colorOption.value;
-
-//ajout de la quantité desire dans une variable
-const choiceQuantity = quantityItem.value;
-    
-//les informations sélectionne à envoyer  vers le panier
-let informationItem = {
-    idItem : id,
-    imageItem : productData.imageUrl,
-    nameItem : productData.name,
-    priceItem : productData.price,
-    choiceColorItem : colorOption.value,
-    choiceQuantityItem : quantityItem.value
-}
-// les informations selectionné vers le local strorage
 let itemInLocalStorage = JSON.parse(localStorage.getItem("itemStorage"));
-
-if(itemInLocalStorage){
-    itemInLocalStorage.push(informationItem);
-    localStorage.setItem("itemStorage", JSON.stringify(itemInLocalStorage));
-
-}else{
-    itemInLocalStorage = [];
-    itemInLocalStorage.push(informationItem);
-    localStorage.setItem("itemStorage", JSON.stringify(itemInLocalStorage));
-}
-
-
-console.log(itemInLocalStorage);
-
-=======
->>>>>>> basket
-});
-
-let quantityItem = document.getElementById("quantity");
-let buttonAddToCart = document.getElementById("addToCart");
-
-
-
-<<<<<<< HEAD
-};
-=======
-//ecoute du bouton ajouter au panier
-buttonAddToCart.addEventListener("click", (event) => {
-
->>>>>>> basket
-
-
     
 //les informations sélectionne à envoyer  vers le panier
 let informationItem = {
-    idItem : id,
-    imageItem : productData.imageUrl,
-    nameItem : productData.name,
-    priceItem : productData.price,
-    choiceColorItem : colorOption.value,
-    choiceQuantityItem : parseInt(quantityItem.value),
+    id : id,
+    image : productData.imageUrl,
+    name : productData.name,
+    price : productData.price,
+    color : colorOption.value,
+    quantity : parseInt(quantityItem.value),
     
+}
+
+const popupConfirmation =() =>{
+    if(window.confirm(`Votre commande a bien été ajoutée au panier. Pour le consulter , cliquez sur OK`)){
+        window.location.href ="cart.html";
+    }
 }
 // les informations selectionné vers le local storage
-let itemInLocalStorage = JSON.parse(localStorage.getItem("itemStorage"));
-
-if(itemInLocalStorage){
-    const storage = itemInLocalStorage.find(
-        (element) => element.idItem == informationItem.idItem && element.choiceColorItem == informationItem.choiceColorItem);
-
-    if (storage) {
-        storage.choiceQuantityItem += informationItem.choiceQuantityItem;
-    
-    localStorage.setItem("itemStorage", JSON.stringify(itemInLocalStorage));
-    return;
-    
-    itemInLocalStorage.push(informationItem);
-    localStorage.setItem("itemStorage", JSON.stringify(itemInLocalStorage));
+ //Si le panier comporte déjà au moins 1 article
+ if (itemInLocalStorage) {
+    const resultFind = itemInLocalStorage.find(
+        (element) => element.id === informationItem.id && element.color === informationItem.color);
+        //Si le produit commandé est déjà dans le panier
+        if (resultFind) {
+            let newQuantity =
+            parseInt(informationItem.quantity) + parseInt(resultFind.quantity);
+            resultFind.quantity = newQuantity;
+            localStorage.setItem("itemStorage", JSON.stringify(itemInLocalStorage));
+            console.table(itemInLocalStorage);
+            popupConfirmation();
+        //Si le produit commandé n'est pas dans le panier
+        } else {
+            itemInLocalStorage.push(informationItem);
+            localStorage.setItem("itemStorage", JSON.stringify(itemInLocalStorage));
+            console.table(itemInLocalStorage);
+            popupConfirmation();
+        }
+    //Si le panier est vide
+    } else {
+        itemInLocalStorage =[];
+        itemInLocalStorage.push(informationItem);
+        localStorage.setItem("itemStorage", JSON.stringify(itemInLocalStorage));
+        console.table(itemInLocalStorage);
+        popupConfirmation();
     }
-}else{
-    const cart = [];
-    cart.push(informationItem);
-    localStorage.setItem("itemStorage", JSON.stringify(cart));
-}
 
-
-console.log(localStorage);
 });
 
 };
