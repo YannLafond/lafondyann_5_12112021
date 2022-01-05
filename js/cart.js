@@ -60,7 +60,7 @@ function getTotals(){
 
   let productTotalQuantity = document.getElementById('totalQuantity');
   productTotalQuantity.innerHTML = totalQtt;
-  console.log(totalQtt);
+  
 
   // Récupération du prix total
   totalPrice = 0;
@@ -71,7 +71,7 @@ function getTotals(){
 
   let productTotalPrice = document.getElementById('totalPrice');
   productTotalPrice.innerHTML = totalPrice;
-  console.log(totalPrice);
+  
 }
 getTotals();
 
@@ -112,23 +112,24 @@ changeQuantity();
 // ______________supression de l'article du panier
 
 function deleteItem() {
-  let deleteButton = document.querySelectorAll(".deleteItem");
-
-  for ( i = 0; i < deleteButton.length; i++ ) {
-    deleteButton[i].addEventListener("click", (event) => {
+  const deleteButtons = document.querySelectorAll(".deleteItem");
+  deleteButtons.forEach((deleteButton) => {
+    deleteButton.addEventListener("click", (event) => {
       event.preventDefault();
-
-        let idDelete = itemInLocalStorage[i].id;
-        let colorDelete = itemInLocalStorage[i].color;
-
-        itemInLocalStorage = itemInLocalStorage.filter (element => element.id !== idDelete || element.color !== colorDelete);
-
-        alert ("Le produit a bien été supprimé")
-        location.reload();
+      const idDelete = event.target.getAttribute("data-id");
+      const colorDelete = event.target.getAttribute("data-color");
+      itemInLocalStorage = itemInLocalStorage.filter ((element) => element.id == idDelete && element.color == colorDelete);
     });
+  });
+    localStorage.setItem("cartItems", JSON.stringify(itemInLocalStorage));
+    location.reload();
+    alert ("Le produit a bien été supprimé");
+       
+    };
+    
   }
-}
-deleteItem();
+  
+console.log(data-id);
 
 
 
@@ -136,7 +137,8 @@ deleteItem();
 
 
 
-}
+
+
 
 //___________________________Le formulaire______________________
 
@@ -153,7 +155,7 @@ let regexEmail = /^[A-Za-z0-9\-\.]+@([A-Za-z0-9\-]+\.)+[A-Za-z0-9-]{2,4}$/;
 
 
 // Validation du prénom
-firstName.addEventListener("input", (event) => {
+inputFirstName.addEventListener("input", (event) => {
   event.preventDefault();
   if (regexName.test(inputFirstName.value) == false || inputFirstName.value == "") {
     document.getElementById("firstNameErrorMsg").innerHTML = "Veuillez indiquer votre prénom";
@@ -163,7 +165,7 @@ firstName.addEventListener("input", (event) => {
 });
 
 // Validation du nom
-lastName.addEventListener("input", (event) => {
+inputLastName.addEventListener("input", (event) => {
   event.preventDefault();
   if (regexName.test(inputLastName.value) == false || inputLastName.value == "") {
     document.getElementById("lastNameErrorMsg").innerHTML = "Veuillez indiquer votre nom";
@@ -173,7 +175,7 @@ lastName.addEventListener("input", (event) => {
 });
 
 // Validation de l'adresse
-address.addEventListener("input", (event) => {
+inputAddress.addEventListener("input", (event) => {
   event.preventDefault();
   if (regexAdress.test(inputAddress.value) == false || inputAddress.value == "") {
     document.getElementById("addressErrorMsg").innerHTML = "Veuillez indiquer votre adresse";
@@ -183,7 +185,7 @@ address.addEventListener("input", (event) => {
 });
 
 // Validation de la ville
-city.addEventListener("input", (event) => {
+inputCity.addEventListener("input", (event) => {
   event.preventDefault();
   if (regexName.test(inputCity.value) == false || inputCity.value == "") {
     document.getElementById("cityErrorMsg").innerHTML = "Veuillez indiquer votre ville";
@@ -193,7 +195,7 @@ city.addEventListener("input", (event) => {
 });
 
 // Validation de l'email
-email.addEventListener("input", (event) => {
+inputEmail.addEventListener("input", (event) => {
   event.preventDefault();
   if (regexEmail.test(inputEmail.value) == false || inputEmail.value == "") {
     document.getElementById("emailErrorMsg").innerHTML = "Veuillez indiquer votre email";
