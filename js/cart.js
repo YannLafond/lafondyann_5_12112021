@@ -1,10 +1,91 @@
-// récupération du panier dans le local storage
-let itemInLocalStorage = JSON.parse(localStorage.getItem("itemStorage"));
+//-----------------------------récupération du panier dans le local storage-------------------------
+let itemInLocalStorage = localStorage.getItem("itemStorage");
+itemInLocalStorage = JSON.parse(itemInLocalStorage);
 
 console.log(itemInLocalStorage);
 
 const cartItems = document.getElementById("cart__items");
 let cartItemContent = [];
+
+
+//------------------------------Ensemble des fonctions pour le panier--------------------------------
+
+// ______________Total des articles et du prix
+function getTotals(){
+
+  // Récupération du total des quantités
+  let itemsQuantity = document.getElementsByClassName('itemQuantity');
+  let myLength = itemsQuantity.length,
+  totalQtt = 0;
+
+  for (let i = 0; i < myLength; ++i) {
+      totalQtt += itemsQuantity[i].valueAsNumber;
+  }
+
+  let ButtodeleteButtonsTotalQuantity = document.getElementById('totalQuantity');
+  ButtodeleteButtonsTotalQuantity.innerHTML = totalQtt;
+  
+
+  // Récupération du prix total
+  totalPrice = 0;
+
+  for (let i = 0; i < myLength; ++i) {
+      totalPrice += (itemsQuantity[i].valueAsNumber * itemInLocalStorage[i].price);
+  }
+
+  let ButtodeleteButtonsTotalPrice = document.getElementById('totalPrice');
+  ButtodeleteButtonsTotalPrice.innerHTML = totalPrice;
+  
+}
+
+// ______________Mise à jour du nombre d'article
+
+function changeQuantity() {
+  let quantityChanging = document.querySelectorAll(".itemQuantity");
+
+  for (let i = 0; i < quantityChanging.length; i++){
+      quantityChanging[i].addEventListener("change" , (event) => {
+          event.preventDefault();
+
+          //Selection de l'element à modifier en fonction de son id ET sa couleur
+          let quantityModif = itemInLocalStorage[i].quantity;
+          let quantityChangingValue = quantityChanging[i].value;
+          
+          const resultFind = itemInLocalStorage.find((element) => element.quantityChangingValue !== quantityModif);
+
+          resultFind.quantity = quantityChangingValue;
+          itemInLocalStorage[i].quantity = resultFind.quantity;
+
+          localStorage.setItem("itemStorage", JSON.stringify(itemInLocalStorage));
+      
+          // refresh rapide
+          location.reload();
+      })
+  }
+}
+
+// ______________supression de l'article du panier
+
+function deleteItem() {
+  let deleteButtons = Array.from(document.querySelectorAll(".deleteItem"));
+  for (let i=0; i<deleteButtons.lenght; i++)
+    deleteButton[i].addEventListener("click", (event) => {
+      event.preventDefault();
+
+      let idDelete = deleteButtons[i].id && deleteButtons[i].color;
+      
+      itemInLocalStorage = itemInLocalStorage.filter (obj => obj.id && obj.color !== idDelete);    
+      
+  })
+    localStorage.setItem("itemStorage", JSON.stringify(itemInLocalStorage))
+    
+    alert ("Le produit a bien été supprimé");
+
+    location.reload();
+    
+    
+  }
+
 
 // condition Si le panier est vide
 if(itemInLocalStorage === null){
@@ -43,105 +124,16 @@ if(itemInLocalStorage === null){
         
 // l'injecte dans le code html
   if (i == itemInLocalStorage.length) {
-    cartItems.innerHTML = cartItemContent;
+    cartItems.innerHTML = cartItemContent;    
     
+    getTotals();
+    changeQuantity();
     
-// ______________Total des articles et du prix
-function getTotals(){
-
-  // Récupération du total des quantités
-  var itemsQuantity = document.getElementsByClassName('itemQuantity');
-  var myLength = itemsQuantity.length,
-  totalQtt = 0;
-
-  for (var i = 0; i < myLength; ++i) {
-      totalQtt += itemsQuantity[i].valueAsNumber;
-  }
-
-  let productTotalQuantity = document.getElementById('totalQuantity');
-  productTotalQuantity.innerHTML = totalQtt;
-  
-
-  // Récupération du prix total
-  totalPrice = 0;
-
-  for (var i = 0; i < myLength; ++i) {
-      totalPrice += (itemsQuantity[i].valueAsNumber * itemInLocalStorage[i].price);
-  }
-
-  let productTotalPrice = document.getElementById('totalPrice');
-  productTotalPrice.innerHTML = totalPrice;
-  
-}
-getTotals();
-
-
-
-  }
-
-// ______________Mise à jour du nombre d'article
-
-function changeQuantity() {
-  let quantityChanging = document.querySelectorAll(".itemQuantity");
-
-  for (let i = 0; i < quantityChanging.length; i++){
-      quantityChanging[i].addEventListener("change" , (event) => {
-          event.preventDefault();
-
-          //Selection de l'element à modifier en fonction de son id ET sa couleur
-          let quantityModif = itemInLocalStorage[i].quantity;
-          let quantityChangingValue = quantityChanging[i].value;
-          
-          const resultFind = itemInLocalStorage.find((element) => element.quantityChangingValue !== quantityModif);
-
-          resultFind.quantity = quantityChangingValue;
-          itemInLocalStorage[i].quantity = resultFind.quantity;
-
-          localStorage.setItem("itemStorage", JSON.stringify(itemInLocalStorage));
-      
-          // refresh rapide
-          location.reload();
-      })
   }
 }
-changeQuantity();
 
 
-
-
-// ______________supression de l'article du panier
-
-function deleteItem() {
-  const deleteButtons = document.querySelectorAll(".deleteItem");
-  deleteButtons.forEach((deleteButton) => {
-    deleteButton.addEventListener("click", (event) => {
-      event.preventDefault();
-      const idDelete = event.target.getAttribute("data-id");
-      const colorDelete = event.target.getAttribute("data-color");
-      itemInLocalStorage = itemInLocalStorage.filter ((element) => element.id == idDelete && element.color == colorDelete);
-    });
-  });
-    localStorage.setItem("cartItems", JSON.stringify(itemInLocalStorage));
-    location.reload();
-    alert ("Le produit a bien été supprimé");
-       
-    };
-    
-  }
-  
-console.log(data-id);
-
-
-
-
-
-
-
-
-
-
-//___________________________Le formulaire______________________
-
+//------------------------------Le formulaire-----------------------------------
 
  const inputFirstName = document.getElementById("firstName");
  const inputLastName = document.getElementById("lastName");
@@ -242,13 +234,14 @@ order.addEventListener("click", (event) => {
        products.push(order.id);       
      });
 
-     let productsOrder = { contact, products };
+     let buttonnOrder = { contact, products };
+     console.log(buttonnOrder);
 
      fetch("http://localhost:3000/api/products/order", {
        method: "POST",
        body: JSON.stringify(order),
        headers: {
-         "Accept": "application/json",
+          Accept: "application/json",
          "content-type": "application/json",
        },
        
@@ -256,8 +249,8 @@ order.addEventListener("click", (event) => {
      .then((res) => { return res.json();
      })
      .then((confirm) => {
-       window.location.href = "../html/confirmation.html?orderId=" + confirm.orderId;
-       localStorage.clear();
+       window.location.href = "../html/confirmation.html?orderId=" + order.id;
+       
      })
      .catch ((error) => {
        console.log("Il y a une erreur");
