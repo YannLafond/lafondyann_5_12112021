@@ -14,12 +14,11 @@ let cartItemContent = [];
 function getTotals(){
 
   // Récupération du total des quantités
-  let itemsQuantity = document.getElementsByClassName('itemQuantity');
-  let myLength = itemsQuantity.length,
-  totalQtt = 0;
+  let itemsQuantity = document.getElementsByClassName('itemQuantity');  
+  let totalQtt = 0;
 
-  for (let i = 0; i < myLength; ++i) {
-      totalQtt += itemsQuantity[i].valueAsNumber;
+  for (let i = 0; i < itemsQuantity.length; ++i) {
+      totalQtt += parseInt(itemsQuantity[i].value);
   }
 
   let ButtodeleteButtonsTotalQuantity = document.getElementById('totalQuantity');
@@ -27,10 +26,10 @@ function getTotals(){
   
 
   // Récupération du prix total
-  totalPrice = 0;
+  let totalPrice = 0;
 
-  for (let i = 0; i < myLength; ++i) {
-      totalPrice += (itemsQuantity[i].valueAsNumber * itemInLocalStorage[i].price);
+  for (let i = 0; i < itemsQuantity.length; ++i) {
+      totalPrice += (parseInt(itemsQuantity[i].value) * itemInLocalStorage[i].price);
   }
 
   let ButtodeleteButtonsTotalPrice = document.getElementById('totalPrice');
@@ -67,25 +66,30 @@ function changeQuantity() {
 // ______________supression de l'article du panier
 
 function deleteItem() {
-  let deleteButtons = Array.from(document.querySelectorAll(".deleteItem"));
-  for (let i=0; i<deleteButtons.lenght; i++)
-    deleteButton[i].addEventListener("click", (event) => {
+  let deleteButtons = document.querySelectorAll(".deleteItem");
+  
+  for (let i=0; i<deleteButtons.length; i++){
+    
+  
+
+    deleteButtons[i].addEventListener("click", (event) => {
       event.preventDefault();
-
-      let idDelete = deleteButtons[i].id && deleteButtons[i].color;
       
-      itemInLocalStorage = itemInLocalStorage.filter (obj => obj.id && obj.color !== idDelete);    
+      let idDelete = deleteButtons[i].dataset.id ;
+      let colorDelete =  deleteButtons[i].dataset.color;
       
-  })
-    localStorage.setItem("itemStorage", JSON.stringify(itemInLocalStorage))
+      let temp = itemInLocalStorage.filter (obj => obj.id  !== idDelete && obj.color !== colorDelete);   
     
-    alert ("Le produit a bien été supprimé");
 
-    location.reload();
+      localStorage.setItem("itemStorage", JSON.stringify(temp))
     
+      alert ("Le produit a bien été supprimé");
+
+      location.reload();
+  })    
     
   }
-
+}
 
 // condition Si le panier est vide
 if(itemInLocalStorage === null){
@@ -95,9 +99,9 @@ if(itemInLocalStorage === null){
 } else {
 
     for (i = 0; i < itemInLocalStorage.length; i++){
-       cartItemContent  +=  `
+      cartItemContent  +=  `
     
-            <article class="cart__item" data-id= ${itemInLocalStorage[i].id}>
+            <article class="cart__item" data-id="${itemInLocalStorage[i].id}">
                 <div class="cart__item__img">
                 <img src="${itemInLocalStorage[i].image}" alt="image d'un canapé">
                 </div>
@@ -109,10 +113,10 @@ if(itemInLocalStorage === null){
                     <div class="cart__item__content__settings">
                         <div class="cart__item__content__settings__Price">
                             <p>Qté : ${itemInLocalStorage[i].quantity}</p>
-                            <input data-id= ${itemInLocalStorage[i].id} data-color= ${itemInLocalStorage[i].color} type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value=${itemInLocalStorage[i].quantity}>                                                        
+                            <input data-id= "${itemInLocalStorage[i].id}" data-color= "${itemInLocalStorage[i].color}" type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${itemInLocalStorage[i].quantity}">                                                        
                         </div>
                         <div class="cart__item__content__settings__delete">
-                        <p data-id= ${itemInLocalStorage[i].id} data-color= ${itemInLocalStorage[i].color} class="deleteItem">Supprimer</p>
+                        <p data-id= "${itemInLocalStorage[i].id}" data-color= "${itemInLocalStorage[i].color}" class="deleteItem">Supprimer</p>
                         </div>
                     </div>
                 </div>
@@ -128,18 +132,18 @@ if(itemInLocalStorage === null){
     
     getTotals();
     changeQuantity();
-    
+    deleteItem();
   }
 }
 
 
 //------------------------------Le formulaire-----------------------------------
 
- const inputFirstName = document.getElementById("firstName");
- const inputLastName = document.getElementById("lastName");
- const inputAddress = document.getElementById("address");
- const inputCity = document.getElementById("city");
- const inputEmail = document.getElementById("email");
+const inputFirstName = document.getElementById("firstName");
+const inputLastName = document.getElementById("lastName");
+const inputAddress = document.getElementById("address");
+const inputCity = document.getElementById("city");
+const inputEmail = document.getElementById("email");
 
 let regexName = /^[a-zA-Z\-çñàéèêëïîôüù ]{2,}$/;
 let regexAdress =  /^[0-9a-zA-Z\s,.'-çñàéèêëïîôüù]{3,}$/;
@@ -212,51 +216,51 @@ order.addEventListener("click", (event) => {
   };
 
   if (
-   firstName.value === ""||
-   lastName.value === "" ||
-   address.value === "" ||
-   city.value === "" ||
-   email.value === ""   
-   ) {
+  firstName.value === ""||
+  lastName.value === "" ||
+  address.value === "" ||
+  city.value === "" ||
+  email.value === ""   
+  ) {
     window.confirm ("Veuillez remplir le formulaire pour passez votre commande.")
 
-   } else if (
-     regexName.test(firstName.value) == false ||
-     regexName.test(lastName.value) == false ||
-     regexAdress.test(address.value) == false ||
-     regexName.test(city.value) == false ||
-     regexEmail.test(email.value) == false
-   ) {
-     window.confirm ("Veuillez remplir correctement le formulaire pour passez votre commande.")     
-   } else {
-     let products = [];
-     itemInLocalStorage.forEach(order => {
-       products.push(order.id);       
-     });
+  } else if (
+    regexName.test(firstName.value) == false ||
+    regexName.test(lastName.value) == false ||
+    regexAdress.test(address.value) == false ||
+    regexName.test(city.value) == false ||
+    regexEmail.test(email.value) == false
+    ) {
+    window.confirm ("Veuillez remplir correctement le formulaire pour passez votre commande.")     
+  } else {
+    let products = [];
+    itemInLocalStorage.forEach(order => {
+      products.push(order.id);       
+    });
 
-     let buttonnOrder = { contact, products };
-     console.log(buttonnOrder);
+    let buttonnOrder = { contact, products };
+    console.log(buttonnOrder);
 
-     fetch("http://localhost:3000/api/products/order", {
-       method: "POST",
-       body: JSON.stringify(order),
-       headers: {
+    fetch("http://localhost:3000/api/products/order", {
+      method: "POST",
+      body: JSON.stringify(order),
+      headers: {
           Accept: "application/json",
-         "content-type": "application/json",
-       },
-       
-     })
-     .then((res) => { return res.json();
-     })
-     .then((confirm) => {
-       window.location.href = "../html/confirmation.html?orderId=" + order.id;
-       
-     })
-     .catch ((error) => {
-       console.log("Il y a une erreur");
-     });
+        "content-type": "application/json",
+      },
+      
+    })
+    .then((res) => { return res.json();
+    })
+    .then((confirm) => {
+      window.location.href = "../html/confirmation.html?orderId=" + order.id;
+      
+    })
+    .catch ((error) => {
+      console.log("Il y a une erreur");
+    });
 
-   }
-   
+  }
+
 });
 
