@@ -18,7 +18,7 @@ const fetchSofa = async ()=> {
     .then((res) => res.json())
     .then ((promise) => {
         productData = promise;    
-           
+        
     });
 };
 
@@ -82,7 +82,7 @@ const popupConfirmation =() =>{
 }
 // les informations selectionné vers le local storage
  //Si le panier comporte déjà au moins 1 article
- if (itemInLocalStorage) {
+if (itemInLocalStorage) {
     const resultFind = itemInLocalStorage.find(
         (element) => element.id === informationItem.id && element.color === informationItem.color);
         //Si le produit commandé est déjà dans le panier

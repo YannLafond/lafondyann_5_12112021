@@ -1,39 +1,115 @@
-//-----------------------------récupération du panier dans le local storage-------------------------
+//-----------------------------récupération du panier dans le local storage et du prix dans l'api-------------------------
 let itemInLocalStorage = localStorage.getItem("itemStorage");
 itemInLocalStorage = JSON.parse(itemInLocalStorage);
 
 console.log(itemInLocalStorage);
 
-const cartItems = document.getElementById("cart__items");
-let cartItemContent = [];
-
-
 //------------------------------Ensemble des fonctions pour le panier--------------------------------
+
+//______________ Création du contenu de la page
+async function pageElements(){
+  let cartItems = document.getElementById("cart__items");
+  for (let item of itemInLocalStorage) {
+    await fetch (`http://localhost:3000/api/products/${item.id}`)
+    .then((response) => response.json())
+    .then((data) => (item.price = data.price));
+    
+  
+  // Création des balises
+  
+  let cart__item = document.createElement("article");
+  let cart__item__img = document.createElement("div");
+  let img = document.createElement("img");
+  let cart__item__content = document.createElement("div");
+  let cart__item__description = document.createElement("div");
+  let cart__item__description__name = document.createElement("h2");
+  let cart__item__description__color = document.createElement("p");
+  let cart__item__description__price = document.createElement("p");
+  let cart__item__content__settings = document.createElement("div");
+  let cart__item__content__settings__quantity = document.createElement("div");
+  let cart__item__content__settings__quantity__qty = document.createElement("p");
+  let itemQuantity = document.createElement("input");
+  let cart__item__content__settings__delete = document.createElement("div");
+  let deleteItem = document.createElement("p");
+
+  // Ajout des balises 
+  cartItems.appendChild(cart__item);
+  cart__item.appendChild(cart__item__img);
+  cart__item__img.appendChild(img);
+  cart__item.appendChild(cart__item__content);
+  cart__item__content.appendChild(cart__item__description);
+  cart__item__description.append(cart__item__description__name, cart__item__description__color, cart__item__description__price);
+  cart__item__content.appendChild(cart__item__content__settings);
+  cart__item__content__settings.appendChild(cart__item__content__settings__quantity);
+  cart__item__content__settings__quantity.appendChild(cart__item__content__settings__quantity__qty);
+  cart__item__content__settings__quantity.appendChild(itemQuantity);
+  cart__item__content__settings.appendChild(cart__item__content__settings__delete);
+  cart__item__content__settings__delete.appendChild(deleteItem);
+
+  // Ajout des classes et attributs
+  cart__item.classList.add("cart__item");
+  cart__item.setAttribute("data-id", item.id);
+  cart__item.setAttribute("data-color", item.color);
+
+  cart__item__img.classList.add("cart__item__img");
+  img.src = item.image;
+  img.alt.textContent ="image d'un canapé";
+  
+  cart__item__content.classList.add("cart__item__content");
+  cart__item__description.classList.add("cart__item__description");
+
+  cart__item__description__name.textContent = item.name;
+  cart__item__description__color.textContent = item.color;
+  cart__item__description__price.textContent = Intl.NumberFormat(
+    "fr-FR",
+    {
+      style: "currency",
+      currency: "EUR",
+      maximumFractionDigits: 0,
+    }
+  ).format(item.price);
+
+  cart__item__content__settings__quantity.classList.add("cart__item__content__settings__quantity");
+  cart__item__content__settings__quantity__qty.textContent = "Qté : ";
+
+  itemQuantity.classList.add("itemQuantity");
+  itemQuantity.setAttribute("name", "itemQuantity");
+  itemQuantity.setAttribute("type", "number");
+  itemQuantity.setAttribute("min", "1");
+  itemQuantity.setAttribute("max", "100");
+  itemQuantity.setAttribute("value", item.quantity);
+
+  cart__item__content__settings__delete.classList.add("cart__item__content__settings__delete");
+
+  deleteItem.classList.add("deleteItem");
+  deleteItem.textcontent = "Supprimer";
+
+};
+}
 
 // ______________Total des articles et du prix
 function getTotals(){
 
   // Récupération du total des quantités
-  let itemsQuantity = document.getElementsByClassName('itemQuantity');  
   let totalQtt = 0;
 
-  for (let i = 0; i < itemsQuantity.length; ++i) {
-      totalQtt += parseInt(itemsQuantity[i].value);
+  for (let i = 0; i < itemInLocalStorage.length; ++i) {
+      totalQtt += parseInt(itemInLocalStorage[i].quantity);
   }
 
-  let ButtodeleteButtonsTotalQuantity = document.getElementById('totalQuantity');
-  ButtodeleteButtonsTotalQuantity.innerHTML = totalQtt;
+  let affichTotalQuantity = document.getElementById('totalQuantity');
+  affichTotalQuantity.innerHTML = totalQtt;
   
 
   // Récupération du prix total
   let totalPrice = 0;
 
-  for (let i = 0; i < itemsQuantity.length; ++i) {
-      totalPrice += (parseInt(itemsQuantity[i].value) * itemInLocalStorage[i].price);
+  for (let i = 0; i < itemInLocalStorage.length; ++i) {
+      totalPrice += (parseInt(itemInLocalStorage[i].quantity) * itemInLocalStorage[i].price);
   }
 
-  let ButtodeleteButtonsTotalPrice = document.getElementById('totalPrice');
-  ButtodeleteButtonsTotalPrice.innerHTML = totalPrice;
+  let affichTotalPrice = document.getElementById('totalPrice');
+  affichTotalPrice.innerHTML = totalPrice;
   
 }
 
@@ -57,20 +133,18 @@ function changeQuantity() {
 
           localStorage.setItem("itemStorage", JSON.stringify(itemInLocalStorage));
       
-          // refresh rapide
+          // Mise à jour de la page
           location.reload();
       })
   }
 }
 
-// ______________supression de l'article du panier
+// ______________Supression de l'article du panier
 
 function deleteItem() {
   let deleteButtons = document.querySelectorAll(".deleteItem");
   
   for (let i=0; i<deleteButtons.length; i++){
-    
-  
 
     deleteButtons[i].addEventListener("click", (event) => {
       event.preventDefault();
@@ -78,16 +152,14 @@ function deleteItem() {
       let idDelete = deleteButtons[i].dataset.id ;
       let colorDelete =  deleteButtons[i].dataset.color;
       
-      let temp = itemInLocalStorage.filter (obj => obj.id  !== idDelete && obj.color !== colorDelete);   
-    
+      let temp = itemInLocalStorage.filter (obj => obj.id  !== idDelete && obj.color !== colorDelete);    
 
       localStorage.setItem("itemStorage", JSON.stringify(temp))
     
       alert ("Le produit a bien été supprimé");
 
       location.reload();
-  })    
-    
+  })  
   }
 }
 
@@ -95,47 +167,39 @@ function deleteItem() {
 if(itemInLocalStorage === null){
     window.alert("Votre panier est vide");
 
-// Sinon boucle sur le panier 
+// Sinon on affiche le panier 
 } else {
 
-    for (i = 0; i < itemInLocalStorage.length; i++){
-      cartItemContent  +=  `
+    // for (i = 0; i < itemInLocalStorage.length; i++){
+    //   cartItemContent  +=  `
     
-            <article class="cart__item" data-id="${itemInLocalStorage[i].id}">
-                <div class="cart__item__img">
-                <img src="${itemInLocalStorage[i].image}" alt="image d'un canapé">
-                </div>
-                <div class="cart__item__content">
-                    <div class="cart__item__content__titlePrice">
-                        <h2>${itemInLocalStorage[i].name}</h2>
-                        <p>${itemInLocalStorage[i].price} €</p>
-                    </div>
-                    <div class="cart__item__content__settings">
-                        <div class="cart__item__content__settings__Price">
-                            <p>Qté : ${itemInLocalStorage[i].quantity}</p>
-                            <input data-id= "${itemInLocalStorage[i].id}" data-color= "${itemInLocalStorage[i].color}" type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${itemInLocalStorage[i].quantity}">                                                        
-                        </div>
-                        <div class="cart__item__content__settings__delete">
-                        <p data-id= "${itemInLocalStorage[i].id}" data-color= "${itemInLocalStorage[i].color}" class="deleteItem">Supprimer</p>
-                        </div>
-                    </div>
-                </div>
-            </article>                
-        `
-    };    
-
-
-        
-// l'injecte dans le code html
-  if (i == itemInLocalStorage.length) {
-    cartItems.innerHTML = cartItemContent;    
-    
+    //         <article class="cart__item" data-id="${itemInLocalStorage[i].id}">
+    //             <div class="cart__item__img">
+    //             <img src="${itemInLocalStorage[i].image}" alt="image d'un canapé">
+    //             </div>
+    //             <div class="cart__item__content">
+    //                 <div class="cart__item__content__titlePrice">
+    //                     <h2>${itemInLocalStorage[i].name}</h2>
+    //                     <p>${itemInLocalStorage[i].price} €</p>
+    //                 </div>
+    //                 <div class="cart__item__content__settings">
+    //                     <div class="cart__item__content__settings__Price">
+    //                         <p>Qté : ${itemInLocalStorage[i].quantity}</p>
+    //                         <input data-id= "${itemInLocalStorage[i].id}" data-color= "${itemInLocalStorage[i].color}" type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${itemInLocalStorage[i].quantity}">                                                        
+    //                     </div>
+    //                     <div class="cart__item__content__settings__delete">
+    //                     <p data-id= "${itemInLocalStorage[i].id}" data-color= "${itemInLocalStorage[i].color}" class="deleteItem">Supprimer</p>
+    //                     </div>
+    //                 </div>
+    //             </div>
+    //         </article>                
+    //     `
+    // };
+    pageElements();
     getTotals();
     changeQuantity();
-    deleteItem();
-  }
-}
-
+    deleteItem();    
+  };
 
 //------------------------------Le formulaire-----------------------------------
 
@@ -206,7 +270,7 @@ let order = document.getElementById("order");
 order.addEventListener("click", (event) => {
   event.preventDefault();
 
-  // Récupération des données utilisateur
+// Récupération des données utilisateur
   let contact = {
     firstName: inputFirstName.value,
     lastName: inputLastName.value,
@@ -215,6 +279,7 @@ order.addEventListener("click", (event) => {
     email: inputEmail.value,
   };
 
+// Vérification que tout les champs soient remplis
   if (
   firstName.value === ""||
   lastName.value === "" ||
@@ -224,6 +289,7 @@ order.addEventListener("click", (event) => {
   ) {
     window.confirm ("Veuillez remplir le formulaire pour passez votre commande.")
 
+// Vérification que tout les champs soient correctement remplis
   } else if (
     regexName.test(firstName.value) == false ||
     regexName.test(lastName.value) == false ||
@@ -232,35 +298,10 @@ order.addEventListener("click", (event) => {
     regexEmail.test(email.value) == false
     ) {
     window.confirm ("Veuillez remplir correctement le formulaire pour passez votre commande.")     
-  } else {
-    let products = [];
-    itemInLocalStorage.forEach(order => {
-      products.push(order.id);       
-    });
 
-    let buttonnOrder = { contact, products };
-    console.log(buttonnOrder);
-
-    fetch("http://localhost:3000/api/products/order", {
-      method: "POST",
-      body: JSON.stringify(order),
-      headers: {
-          Accept: "application/json",
-        "content-type": "application/json",
-      },
-      
-    })
-    .then((res) => { return res.json();
-    })
-    .then((confirm) => {
-      window.location.href = "../html/confirmation.html?orderId=" + order.id;
-      
-    })
-    .catch ((error) => {
-      console.log("Il y a une erreur");
-    });
+  
 
   }
-
-});
+}
+);
 
