@@ -1,4 +1,4 @@
-//-----------------------------récupération du panier dans le local storage et du prix dans l'api-------------------------
+//-----------------------------récupération du panier dans le local storage-------------------------
 let itemInLocalStorage = localStorage.getItem("itemStorage");
 itemInLocalStorage = JSON.parse(itemInLocalStorage);
 
@@ -82,8 +82,7 @@ async function pageElements(){
   cart__item__content__settings__delete.classList.add("cart__item__content__settings__delete");
 
   deleteItem.classList.add("deleteItem");
-  deleteItem.textcontent = "Supprimer";
-
+  deleteItem.textContent = "Supprimer";
 };
 }
 
@@ -109,8 +108,7 @@ function getTotals(){
   }
 
   let affichTotalPrice = document.getElementById('totalPrice');
-  affichTotalPrice.innerHTML = totalPrice;
-  
+  affichTotalPrice.innerHTML = totalPrice;  
 }
 
 // ______________Mise à jour du nombre d'article
@@ -122,8 +120,8 @@ function changeQuantity() {
       quantityChanging[i].addEventListener("change" , (event) => {
           event.preventDefault();
 
-          //Selection de l'element à modifier en fonction de son id ET sa couleur
-          let quantityModif = itemInLocalStorage[i].quantity;
+          //Selection de l'element à modifier 
+          let quantityModif =  itemInLocalStorage[i].quantity;
           let quantityChangingValue = quantityChanging[i].value;
           
           const resultFind = itemInLocalStorage.find((element) => element.quantityChangingValue !== quantityModif);
@@ -134,9 +132,9 @@ function changeQuantity() {
           localStorage.setItem("itemStorage", JSON.stringify(itemInLocalStorage));
       
           // Mise à jour de la page
-          location.reload();
+          location.reload();    
       })
-  }
+  };
 }
 
 // ______________Supression de l'article du panier
@@ -160,7 +158,8 @@ function deleteItem() {
 
       location.reload();
   })  
-  }
+  };
+  
 }
 
 // condition Si le panier est vide
@@ -297,10 +296,12 @@ order.addEventListener("click", (event) => {
     regexName.test(city.value) == false ||
     regexEmail.test(email.value) == false
     ) {
-    window.confirm ("Veuillez remplir correctement le formulaire pour passez votre commande.")     
+    window.confirm ("Veuillez remplir correctement le formulaire pour passez votre commande.")   
 
-  
-
+  } else {
+    let totalPrice = document.getElementById('totalPrice').innerText;
+    console.log(totalPrice);
+    document.location.replace(`confirmation.html?&prix=${totalPrice}&orderId=65431343444684674`)
   }
 }
 );
