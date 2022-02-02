@@ -1,6 +1,3 @@
-console.log(document.location.search.split('&')[1].split('=')[1]);
-console.log(document.location.search.split('&')[2].split('=')[1]);
-
 // recuperation de l'id dans la barre d'adresse
 const recoverUrlId = window.location.search;
 

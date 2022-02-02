@@ -297,7 +297,7 @@ order.addEventListener("click", (event) => {
     regexEmail.test(email.value) == false
     ) {
     window.confirm ("Veuillez remplir correctement le formulaire pour passez votre commande.")   
-
+// Après vérification que tout est bon , on bascule vers la page de confirmation et on vide le LocalStorage
   } else {
     let totalPrice = document.getElementById('totalPrice').innerText;
     console.log(totalPrice);
