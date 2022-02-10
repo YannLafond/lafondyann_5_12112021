@@ -10,7 +10,7 @@ const id = extractionId.get("id");
 console.log(id);
 
 let productData = [];
-
+console.log(productData);
 
 
 const fetchSofa = async ()=> {
