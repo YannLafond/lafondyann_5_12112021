@@ -86,6 +86,8 @@ async function pageElements(){
   cart__item__content__settings__delete.classList.add("cart__item__content__settings__delete");
 
   deleteItem.classList.add("deleteItem");
+  deleteItem.setAttribute("data-id", item.id);
+  deleteItem.setAttribute("data-color", item.color);
   deleteItem.textContent = "Supprimer";
 };
 
@@ -123,7 +125,7 @@ async function pageElements(){
           let quantityModif =  itemInLocalStorage[i].quantity;
           let quantityChangingValue = quantityChanging[i].value;
           
-          const resultFind = itemInLocalStorage.find((element) => element.quantityChangingValue !== quantityModif);
+          let resultFind = itemInLocalStorage.find((element) => element.quantityChangingValue !== quantityModif);
 
           resultFind.quantity = quantityChangingValue;
           itemInLocalStorage[i].quantity = resultFind.quantity;
@@ -139,13 +141,12 @@ async function pageElements(){
   let deleteButtons = document.querySelectorAll(".deleteItem");
   
   for (let i=0; i<deleteButtons.length; i++){
-
     deleteButtons[i].addEventListener("click", (event) => {
       event.preventDefault();
       
-      let idDelete = deleteButtons[i].id ;
-      let colorDelete = deleteButtons[i].color;
-      
+      let idDelete = deleteButtons[i].dataset.id ;
+      let colorDelete = deleteButtons[i].dataset.color;
+      console.log('salut');
       let temp = itemInLocalStorage.filter (obj => obj.id  !== idDelete && obj.color !== colorDelete);    
 
       localStorage.setItem("itemStorage", JSON.stringify(temp))
