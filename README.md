@@ -18,7 +18,7 @@ Votre client est Kanap, une marque de canapés qui vend ses produits depuis sa b
 
 ----------------------------------------------------------------------------------------------------------------
 ![](https://img.shields.io/badge/-Git-red?logo=Git&logoColor=white&style=flat)
-![](https://img.shields.io/badge/-Javascript-red?logo=JavaScript&logoColor=white&style=flat)
+![](https://img.shields.io/badge/-Javascript-yellow?logo=JavaScript&logoColor=white&style=flat)
 ![](https://img.shields.io/badge/Author-Yann%20Lafond-blue?style=flat)
 
 
