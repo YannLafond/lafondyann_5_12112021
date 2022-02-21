@@ -114,24 +114,21 @@ async function pageElements(){
   affichTotalPrice.innerHTML = totalPrice;  
 
 // ______________Mise à jour du nombre d'article
-
+  
   let quantityChanging = document.querySelectorAll(".itemQuantity");
+  
 
   for (let i = 0; i < quantityChanging.length; i++){
-      quantityChanging[i].addEventListener("change" , (event) => {
+      quantityChanging[i].addEventListener("click" , (event) => {
           event.preventDefault();
-          
+
           //Selection de l'element à modifier 
           let quantityModif =  itemInLocalStorage[i].quantity;
           let quantityChangingValue = quantityChanging[i].value;
+          itemInLocalStorage[i].quantity = quantityChangingValue;
           
-          let resultFind = itemInLocalStorage.find((element) => element.quantityChangingValue !== quantityModif);
-
-          resultFind.quantity = quantityChangingValue;
-          itemInLocalStorage[i].quantity = resultFind.quantity;
-
           localStorage.setItem("itemStorage", JSON.stringify(itemInLocalStorage));
-                
+          console.log(itemInLocalStorage);
           location.reload();    
       })
   };
@@ -146,7 +143,7 @@ async function pageElements(){
       
       let idDelete = deleteButtons[i].dataset.id ;
       let colorDelete = deleteButtons[i].dataset.color;
-      console.log('salut');
+      
       let temp = itemInLocalStorage.filter (obj => obj.id  !== idDelete && obj.color !== colorDelete);    
 
       localStorage.setItem("itemStorage", JSON.stringify(temp))
