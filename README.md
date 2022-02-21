@@ -4,7 +4,7 @@
 
 ## Scénario:
 
-![logo Kanap](images\logo.png)
+![logo Kanap](https://github.com/YannLafond/lafondyann_5_12112021)
 
 <p>Vous êtes en poste dans une agence de développement web depuis quelques semaines maintenant. Après avoir réalisé avec succès l’intégration de quelques sites web (HTML/CSS), on vous confie une nouvelle mission.
 
