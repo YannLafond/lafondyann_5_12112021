@@ -144,7 +144,7 @@ async function pageElements(){
       let idDelete = deleteButtons[i].dataset.id ;
       let colorDelete = deleteButtons[i].dataset.color;
       
-      let temp = itemInLocalStorage.filter (obj => obj.id  !== idDelete && obj.color !== colorDelete);    
+      let temp = itemInLocalStorage.filter (obj => obj.id  == idDelete && obj.color == colorDelete);    
 
       localStorage.setItem("itemStorage", JSON.stringify(temp))
       
