@@ -4,6 +4,10 @@
 
 ## Scénario:
 
+<<<<<<< HEAD
+=======
+![logo Kanap](images\logo.png)
+>>>>>>> 323a39b (ajout du README)
 
 <p>Vous êtes en poste dans une agence de développement web depuis quelques semaines maintenant. Après avoir réalisé avec succès l’intégration de quelques sites web (HTML/CSS), on vous confie une nouvelle mission.
 
@@ -18,8 +22,15 @@ Votre client est Kanap, une marque de canapés qui vend ses produits depuis sa b
 
 ----------------------------------------------------------------------------------------------------------------
 ![](https://img.shields.io/badge/-Git-red?logo=Git&logoColor=white&style=flat)
+<<<<<<< HEAD
 ![](https://img.shields.io/badge/-Javascript-yellow?logo=JavaScript&logoColor=white&style=flat)
 ![](https://img.shields.io/badge/Author-Yann%20Lafond-blue?style=flat)
 
 
 
+=======
+![](https://img.shields.io/badge/-Javascript-red?logo=JavaScript&logoColor=white&style=flat)
+![](https://img.shields.io/badge/Author-Yann%20Lafond-blue?style=flat)
+
+
+>>>>>>> 323a39b (ajout du README)
