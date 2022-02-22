@@ -312,6 +312,8 @@ order.addEventListener("click", (event) => {
       .then(data => {
         sessionStorage.setItem('order', JSON.stringify(data));
         document.location.replace(`confirmation.html?&prix=${totalPrice}&orderId=65431343444684674`)
+
+        localStorage.clear();
       }
   
 

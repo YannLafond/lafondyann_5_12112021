@@ -5,9 +5,12 @@
 ## Scénario:
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 ![logo Kanap](images\logo.png)
 >>>>>>> 323a39b (ajout du README)
+=======
+>>>>>>> c9fb733 (ajout du vidage du localStorage une fois la commande passé)
 
 <p>Vous êtes en poste dans une agence de développement web depuis quelques semaines maintenant. Après avoir réalisé avec succès l’intégration de quelques sites web (HTML/CSS), on vous confie une nouvelle mission.
 
@@ -23,6 +26,7 @@ Votre client est Kanap, une marque de canapés qui vend ses produits depuis sa b
 ----------------------------------------------------------------------------------------------------------------
 ![](https://img.shields.io/badge/-Git-red?logo=Git&logoColor=white&style=flat)
 <<<<<<< HEAD
+<<<<<<< HEAD
 ![](https://img.shields.io/badge/-Javascript-yellow?logo=JavaScript&logoColor=white&style=flat)
 ![](https://img.shields.io/badge/Author-Yann%20Lafond-blue?style=flat)
 
@@ -34,3 +38,10 @@ Votre client est Kanap, une marque de canapés qui vend ses produits depuis sa b
 
 
 >>>>>>> 323a39b (ajout du README)
+=======
+![](https://img.shields.io/badge/-Javascript-yellow?logo=JavaScript&logoColor=white&style=flat)
+![](https://img.shields.io/badge/Author-Yann%20Lafond-blue?style=flat)
+
+
+
+>>>>>>> c9fb733 (ajout du vidage du localStorage une fois la commande passé)
