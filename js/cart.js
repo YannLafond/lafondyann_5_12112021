@@ -270,8 +270,6 @@ order.addEventListener("click", (event) => {
     email: inputEmail.value,
   };
 
-  
-  console.log(data.value);
 // Vérification que tout les champs soient remplis
   if (
   firstName.value === ""||
@@ -296,21 +294,24 @@ order.addEventListener("click", (event) => {
   } else {
     let totalPrice = document.getElementById('totalPrice').innerText;
 
+//Récupération dans un tableau des info des articles du panier
     let infoOrder =[];
     itemInLocalStorage.forEach((order) => {
     infoOrder.push(order.id, order.color, order.quantity);  
     });
 
+// Variable contenant les info du formulaire et du panier
     let sendOrder = {contact, infoOrder};
     console.log(sendOrder);
 
+//Requete d'envois des données vers le serveur
     fetch('http://localhost:3000/api/products/order',{
       method: 'POST',
       body: JSON.stringify(sendOrder),
       headers: {
-        'Content-Type': 'application/json'
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify(sendOrder)
     })
       .then(response => response.json())
       .then(data => {
