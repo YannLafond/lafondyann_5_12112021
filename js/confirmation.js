@@ -8,3 +8,6 @@ console.log(orderId);
 
 // Injection du numéro de commande
 document.getElementById("orderId").innerText = orderId; 
+
+
+localStorage.clear();

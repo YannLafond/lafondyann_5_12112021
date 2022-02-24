@@ -270,13 +270,8 @@ order.addEventListener("click", (event) => {
     email: inputEmail.value,
   };
 
-  let products = {
-    id: data.id,
-    name: data.name,
-    color: data.color,
-    quantity: data.quantity,
-  };
-  console.log(products.name);
+  
+  console.log(data.value);
 // Vérification que tout les champs soient remplis
   if (
   firstName.value === ""||
@@ -301,22 +296,27 @@ order.addEventListener("click", (event) => {
   } else {
     let totalPrice = document.getElementById('totalPrice').innerText;
 
+    let infoOrder =[];
+    itemInLocalStorage.forEach((order) => {
+    infoOrder.push(order.id, order.color, order.quantity);  
+    });
+
+    let sendOrder = {contact, infoOrder};
+    console.log(sendOrder);
+
     fetch('http://localhost:3000/api/products/order',{
       method: 'POST',
+      body: JSON.stringify(sendOrder),
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({contact, products})
+      body: JSON.stringify(sendOrder)
     })
       .then(response => response.json())
       .then(data => {
         sessionStorage.setItem('order', JSON.stringify(data));
         document.location.replace(`confirmation.html?&prix=${totalPrice}&orderId=65431343444684674`)
-
-        // localStorage.clear();
       }
-  
-
 );
     }
   })
