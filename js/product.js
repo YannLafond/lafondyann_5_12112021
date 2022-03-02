@@ -76,7 +76,7 @@ let informationItem = {
 }
 
 const popupConfirmation =() =>{
-    if(window.confirm(`Votre commande a bien été ajoutée au panier. Pour le consulter , cliquez sur OK`)){
+    if(window.confirm(`Votre article a bien été ajoutée au panier. Pour le consulter , cliquez sur OK`)){
         window.location.href ="cart.html";
     }
 }
@@ -85,6 +85,7 @@ const popupConfirmation =() =>{
 if (itemInLocalStorage) {
     const resultFind = itemInLocalStorage.find(
         (element) => element.id === informationItem.id && element.color === informationItem.color);
+
         //Si le produit commandé est déjà dans le panier
         if (resultFind) {
             let newQuantity =
@@ -93,6 +94,7 @@ if (itemInLocalStorage) {
             localStorage.setItem("itemStorage", JSON.stringify(itemInLocalStorage));
             console.table(itemInLocalStorage);
             popupConfirmation();
+
         //Si le produit commandé n'est pas dans le panier
         } else {
             itemInLocalStorage.push(informationItem);

@@ -1,4 +1,4 @@
-// const { response } = require("express");
+
 
 //-----------------------------récupération du panier du localStorage-------------------------
 let itemInLocalStorage = localStorage.getItem("itemStorage");
@@ -129,28 +129,31 @@ async function pageElements(){
           
           localStorage.setItem("itemStorage", JSON.stringify(itemInLocalStorage));
           console.log(itemInLocalStorage);
-          location.reload();    
+          window.location.href ="cart.html";   
       })
   };
 
 // ______________Supression de l'article du panier
 
   let deleteButtons = document.querySelectorAll(".deleteItem");
-  
+  console.log(deleteButtons);
   for (let i=0; i<deleteButtons.length; i++){
     deleteButtons[i].addEventListener("click", (event) => {
       event.preventDefault();
       
       let idDelete = deleteButtons[i].dataset.id ;
       let colorDelete = deleteButtons[i].dataset.color;
-      
-      let temp = itemInLocalStorage.filter (obj => obj.id  == idDelete && obj.color == colorDelete);    
+      console.log(idDelete);
+      console.log(colorDelete);
+      itemInLocalStorage = itemInLocalStorage.filter (obj => obj.id && obj.color !== colorDelete);    
 
-      localStorage.setItem("itemStorage", JSON.stringify(temp))
+      localStorage.setItem("itemStorage", JSON.stringify(itemInLocalStorage))
       
-      location.reload();
+        window.location.href ="cart.html";
 
       alert ("Le produit a bien été supprimé");
+
+      
 
       
   })  
@@ -200,8 +203,8 @@ const inputAddress = document.getElementById("address");
 const inputCity = document.getElementById("city");
 const inputEmail = document.getElementById("email");
 
-let regexName = /^[a-zA-Z\-çñàéèêëïîôüù ]{2,}$/;
-let regexAdress =  /^[0-9a-zA-Z\s,.'-çñàéèêëïîôüù]{3,}$/;
+let regexName = /^[a-zA-Z\-çñàéèêëïîôüù]{2,}$/;
+let regexAdress =  /^[a-zA-Z0-9\s,.'çñàéèêëïîôüù]{3,}$/;
 let regexEmail = /^[A-Za-z0-9\-\.]+@([A-Za-z0-9\-]+\.)+[A-Za-z0-9-]{2,4}$/;
 
 
@@ -257,8 +260,8 @@ inputEmail.addEventListener("input", (event) => {
 
 // Ecoute du bouton commander
 
-let order = document.getElementById("order");
-order.addEventListener("click", (event) => {
+let btnOrder = document.getElementById("order");
+btnOrder.addEventListener("click", (event) => {
   event.preventDefault();
 
 // Récupération des données utilisateur dans un tableau
@@ -292,32 +295,54 @@ order.addEventListener("click", (event) => {
 
 // Après vérification que tout est bon 
   } else {
-    let totalPrice = document.getElementById('totalPrice').innerText;
+    
 
 //Récupération dans un tableau des info des articles du panier
     let infoOrder =[];
-    itemInLocalStorage.forEach((order) => {
-    infoOrder.push(order.id, order.color, order.quantity);  
+    itemInLocalStorage.forEach((btnOrder) => {
+    infoOrder.push(btnOrder.id);  
     });
 
 // Variable contenant les info du formulaire et du panier
     let sendOrder = {contact, infoOrder};
-    console.log(sendOrder);
-
+    
+console.log(sendOrder);
 //Requete d'envois des données vers le serveur
-    fetch('http://localhost:3000/api/products/order',{
-      method: 'POST',
-      body: JSON.stringify(sendOrder),
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-    })
-      .then(response => response.json())
-      .then(data => {
-        sessionStorage.setItem('order', JSON.stringify(data));
-        document.location.replace(`confirmation.html?&prix=${totalPrice}&orderId=65431343444684674`)
-      }
-);
-    }
-  })
+
+const promise = fetch(`http://localhost:3000/api/products/order` ,{
+    method: "POST",    
+    headers: {
+      Accept : "application/json",
+      "content-type" : "application/json",
+    },
+    body :JSON.stringify(sendOrder),
+})
+console.log(promise);
+console.log("promise");
+console.log("http://localhost:3000/api/products/order");
+
+
+
+// // fetch(`http://localhost:3000/api/products/order` ,{
+// //             method: 'POST',
+// //             body: JSON.stringify(sendOrder),
+// //             headers: {
+// //                 Accept : 'application/json',
+// //                 'Content-Type' : 'application/json',
+// //             },
+// //         });
+        
+// // /*Récupération de la réponse du serveur*/
+// //         .then(async(response)=>{
+// //         try{
+// //             console.log(response);
+// //             const content = await response.json();
+// //             console.log(content);
+// //             localStorage.setItem("order", JSON.stringify(content.orderId));
+// //             console.log(content.orderId);
+// //         }catch(e){
+// //             console.log(e);
+// //         }
+//         // window.location.href = "confirmation.html";
+//   })
+}})
