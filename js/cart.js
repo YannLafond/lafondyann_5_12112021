@@ -1,5 +1,6 @@
 
 
+
 //-----------------------------récupération du panier du localStorage-------------------------
 let itemInLocalStorage = localStorage.getItem("itemStorage");
 itemInLocalStorage = JSON.parse(itemInLocalStorage);
@@ -151,11 +152,7 @@ async function pageElements(){
       
         window.location.href ="cart.html";
 
-      alert ("Le produit a bien été supprimé");
-
-      
-
-      
+      alert ("Le produit a bien été supprimé");      
   })  
   };
 }
@@ -167,31 +164,7 @@ if(itemInLocalStorage === null){
 // Sinon on affiche le panier 
 } else {
 
-    // for (i = 0; i < itemInLocalStorage.length; i++){
-    //   cartItemContent  +=  `
-    
-    //         <article class="cart__item" data-id="${itemInLocalStorage[i].id}">
-    //             <div class="cart__item__img">
-    //             <img src="${itemInLocalStorage[i].image}" alt="image d'un canapé">
-    //             </div>
-    //             <div class="cart__item__content">
-    //                 <div class="cart__item__content__titlePrice">
-    //                     <h2>${itemInLocalStorage[i].name}</h2>
-    //                     <p>${itemInLocalStorage[i].price} €</p>
-    //                 </div>
-    //                 <div class="cart__item__content__settings">
-    //                     <div class="cart__item__content__settings__Price">
-    //                         <p>Qté : ${itemInLocalStorage[i].quantity}</p>
-    //                         <input data-id= "${itemInLocalStorage[i].id}" data-color= "${itemInLocalStorage[i].color}" type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${itemInLocalStorage[i].quantity}">                                                        
-    //                     </div>
-    //                     <div class="cart__item__content__settings__delete">
-    //                     <p data-id= "${itemInLocalStorage[i].id}" data-color= "${itemInLocalStorage[i].color}" class="deleteItem">Supprimer</p>
-    //                     </div>
-    //                 </div>
-    //             </div>
-    //         </article>                
-    //     `
-    // };
+
     pageElements();
   };
 
@@ -268,7 +241,7 @@ btnOrder.addEventListener("click", (event) => {
   const contact = {
     firstName: inputFirstName.value,
     lastName: inputLastName.value,
-    adress: inputAddress.value,
+    address: inputAddress.value,
     city: inputCity.value,
     email: inputEmail.value,
   };
@@ -298,15 +271,15 @@ btnOrder.addEventListener("click", (event) => {
     
 
 //Récupération dans un tableau des info des articles du panier
-    let infoOrder =[];
+    let products =[];
     itemInLocalStorage.forEach((btnOrder) => {
-    infoOrder.push(btnOrder.id);  
+    products.push(btnOrder.id);  
     });
 
 // Variable contenant les info du formulaire et du panier
-    let sendOrder = {contact, infoOrder};
+    let sendOrder = {contact, products};
     
-console.log(sendOrder);
+console.log(products);
 //Requete d'envois des données vers le serveur
 
 const promise = fetch(`http://localhost:3000/api/products/order` ,{
@@ -321,28 +294,16 @@ console.log(promise);
 console.log("promise");
 console.log("http://localhost:3000/api/products/order");
 
+promise.then(async(response)=> {
+  try{
+      const content = await response.json();
+      console.log(content);
+      localStorage.setItem("order", JSON.stringify(content.orderId));
 
 
-// // fetch(`http://localhost:3000/api/products/order` ,{
-// //             method: 'POST',
-// //             body: JSON.stringify(sendOrder),
-// //             headers: {
-// //                 Accept : 'application/json',
-// //                 'Content-Type' : 'application/json',
-// //             },
-// //         });
-        
-// // /*Récupération de la réponse du serveur*/
-// //         .then(async(response)=>{
-// //         try{
-// //             console.log(response);
-// //             const content = await response.json();
-// //             console.log(content);
-// //             localStorage.setItem("order", JSON.stringify(content.orderId));
-// //             console.log(content.orderId);
-// //         }catch(e){
-// //             console.log(e);
-// //         }
-//         // window.location.href = "confirmation.html";
-//   })
+  }catch(e){
+      console.log(e);
+  }
+})
+window.location.href = "confirmation.html";
 }})

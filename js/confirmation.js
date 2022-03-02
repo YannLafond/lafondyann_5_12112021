@@ -1,7 +1,9 @@
 const numberOrder = document.getElementById("orderId");
 
-numberOrder.innerText = JSON.parse(localStorage.getItem("orderId"));
-console.log();
+const order = JSON.parse(localStorage.getItem("order"));
+
+numberOrder.innerHTML = `${order}`; 
+console.log(numberOrder);
 
 
 
